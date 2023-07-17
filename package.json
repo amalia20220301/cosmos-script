@@ -1,0 +1,28 @@
+{
+  "name": "cosmos-script",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "dependencies": {
+    "@cosmjs/amino": "^0.31.0",
+    "@cosmjs/proto-signing": "^0.31.0",
+    "@cosmjs/stargate": "^0.31.0",
+    "@cosmos-client/core": "^0.47.1",
+    "@keystonehq/bc-ur-registry-cosmos": "*",
+    "@near-js/crypto": "^0.0.5",
+    "@near-js/transactions": "^0.2.1",
+    "base64-js": "^1.5.1",
+    "bip32": "^3.0.1",
+    "bip39": "^3.0.4",
+    "bip44-constants": "^228.0.0",
+    "bn.js": "^5.2.1",
+    "cosmjs-types": "^0.8.0",
+    "dotenv": "^16.0.0",
+    "tiny-secp256k1": "^2.2.1",
+    "tweetnacl": "^1.0.3",
+    "uuid": "^8.3.2"
+  },
+  "repository": "git@github.com:amalia20220301/cosmos-script.git",
+  "author": "mrzhao <zhaomengru2018@gmail.com>",
+  "license": "MIT"
+}
