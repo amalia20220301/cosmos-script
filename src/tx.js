@@ -1,9 +1,8 @@
-
 import {MsgVote} from "cosmjs-types/cosmos/gov/v1/tx.js";
 import {VoteOption} from "cosmjs-types/cosmos/gov/v1/gov.js";
 import {longify} from "@cosmjs/stargate/build/queryclient/index.js";
 import {coins, encodePubkey, makeAuthInfoBytes, makeSignDoc, Registry} from "@cosmjs/proto-signing";
-import { AuthInfo, SignDoc, SignerInfo } from "cosmjs-types/cosmos/tx/v1beta1/tx.js";
+import {AuthInfo, SignDoc, SignerInfo} from "cosmjs-types/cosmos/tx/v1beta1/tx.js";
 import {encodeSecp256k1Pubkey} from "@cosmjs/amino";
 import {Int53} from "@cosmjs/math";
 import {
@@ -48,7 +47,7 @@ const serialize_amino = (msg) => {
 }
 
 const serialize_direct = (msg) => {
-    const pubkey = encodePubkey(encodeSecp256k1Pubkey(Buffer.from("0280abfddd08b1ccb49d599356cf92bc6e70b30a6383660f83b51265692a7ccafc","hex")));
+    const pubkey = encodePubkey(encodeSecp256k1Pubkey(Buffer.from("0280abfddd08b1ccb49d599356cf92bc6e70b30a6383660f83b51265692a7ccafc", "hex")));
     const registry = new Registry([...defaultStargateTypes])
     const txBodyFields = {
         typeUrl: "/cosmos.tx.v1beta1.TxBody",
@@ -62,7 +61,7 @@ const serialize_direct = (msg) => {
     const gasLimit = Int53.fromString("12345").toNumber();
     const sequence = "7890";
     const authInfoBytes = makeAuthInfoBytes(
-        [{ pubkey, sequence }],
+        [{pubkey, sequence}],
         coins(2000, "uosmo"),
         gasLimit,
         "feeGranter",
@@ -78,7 +77,7 @@ const serialize_direct = (msg) => {
 
 
 const unknownMsg = [{
-    type: "cosmos-sdk/MsgTransfer",
+    type: "",
     value: {
         source_port: 'desmos1sender',
         source_channel: 'source channel',
@@ -88,13 +87,15 @@ const unknownMsg = [{
         },
         sender: 'desmos1sender',
         receiver: 'desmos1receiver',
-        timeout_height:  {
+        timeout_height: {
             revision_number: 2,
             revision_height: 3000
         },
         timeout_timestamp: 1689751446873,
     },
 }]
+
+
 
 const voteMsg = [{
     type: "cosmos-sdk/MsgVote",
@@ -124,4 +125,24 @@ const voteDirect = {
     }
 }
 
-serialize_direct(voteDirect)
+const ibcTransferDirect = {
+    typeUrl: "/ibc.applications.transfer.v1.MsgTransfer",
+    value:{
+        sourcePort: "transfer",
+        sourceChannel: "channel-192",
+        token: {
+            denom: "uatom",
+            amount: "8036296"
+        },
+        sender: "cosmos1fj9fjjwdp7kv7hwjr4ergc3thqwy9ttrjscexr",
+        receiver: "sif1fj9fjjwdp7kv7hwjr4ergc3thqwy9ttrhdh0fg",
+        timeoutHeight: {
+            revisionNumber: "1",
+            revisionHeight: "12969290"
+        },
+        timeoutTimestamp: "1689782451643963989",
+        memo: ""
+    }
+}
+
+serialize_direct(ibcTransferDirect)
