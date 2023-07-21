@@ -2,16 +2,17 @@ import {coins, encodePubkey, makeAuthInfoBytes, makeSignDoc, Registry} from "@co
 import {encodeSecp256k1Pubkey} from "@cosmjs/amino";
 import {defaultRegistryTypes as defaultStargateTypes} from "@cosmjs/stargate/build/signingstargateclient.js";
 import {Int53} from "@cosmjs/math";
+import {longify} from "@cosmjs/stargate/build/queryclient/index.js";
+import {VoteOption} from "secretjs";
+import {AuthInfo, SignDoc, SignerInfo} from "cosmjs-types/cosmos/tx/v1beta1/tx.js";
 
-const serialize_direct = (msg) => {
+const serialize_direct = (messages) => {
     const pubkey = encodePubkey(encodeSecp256k1Pubkey(Buffer.from("0280abfddd08b1ccb49d599356cf92bc6e70b30a6383660f83b51265692a7ccafc", "hex")));
     const registry = new Registry([...defaultStargateTypes])
     const txBodyFields = {
         typeUrl: "/cosmos.tx.v1beta1.TxBody",
         value: {
-            messages: [
-                msg
-            ],
+            messages,
         },
     };
     const txBodyBytes = registry.encode(txBodyFields);
@@ -44,7 +45,7 @@ const voteDirect = {
 
 const ibcTransferDirect = {
     typeUrl: "/ibc.applications.transfer.v1.MsgTransfer",
-    value:{
+    value: {
         sourcePort: "transfer",
         sourceChannel: "channel-192",
         token: {
@@ -61,3 +62,24 @@ const ibcTransferDirect = {
         memo: ""
     }
 }
+
+const withdrawRewardDirect = [{
+    typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
+    value: {
+        delegatorAddress: "mantle1ceeqym2q878ek9337a5m7dp724cap00npx7e0h",
+        validatorAddress: "mantlevaloper1yvrw5z5ec0n9c253hpy5lkq9cufmk8dvjqnfz8"
+    }
+},
+    {
+        typeUrl: "/cosmos.distribution.v1beta1.MsgWithdrawDelegatorReward",
+        value: {
+            delegatorAddress: "mantle1ceeqym2q878ek9337a5m7dp724cap00npx7e0h",
+            validatorAddress: "mantlevaloper1gp957czryfgyvxwn3tfnyy2f0t9g2p4pmkjlwt",
+            amount: {
+                amount: 142609181,
+                denom: "umntl"
+            }
+        }
+    }]
+
+serialize_direct(withdrawRewardDirect)
